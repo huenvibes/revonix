@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
     // GET PROFILE
    const { data: profile, error: profileError } = await supabase
-  .from("profiles")
+  .from("public.profiles")
   .select("*")
   .eq("id", String(targetUserId).trim())
   .maybeSingle();
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
 
     // UPDATE PROFILE
     const { error: updateError } = await supabase
-      .from("profiles")
+      .from("public.profiles")
       .update({
         balance: newBalance,
         total_earned: newEarned,
