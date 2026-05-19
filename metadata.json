@@ -1,0 +1,6 @@
+{
+  "name": "Revonix",
+  "description": "A modern, lightweight survey rewards platform with a premium SaaS-style identity. Earn rewards through surveys and tasks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
