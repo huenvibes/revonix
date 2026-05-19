@@ -52,10 +52,10 @@ const newEarned = Number(profile.total_earned || 0) + amount;
 const { error } = await supabase
   .from("profiles")
   .update({
-    balance: newBalance,
-    total_earned: newEarned,
+    balance: Number(newBalance),
+    total_earned: Number(newEarned),
   })
-  .eq("id", targetUserId.trim())
+  .eq("id", String(targetUserId).trim());
     if (error) {
       return res.status(500).json({
         success: false,
