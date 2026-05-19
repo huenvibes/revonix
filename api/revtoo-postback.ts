@@ -39,14 +39,16 @@ const amount = Number(
       });
     }
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        balance: Number(profile.balance || 0) + amount,
-        total_earned: Number(profile.total_earned || 0) + amount,
-      })
-      .eq("id", targetUserId);
+    const newBalance = Number(profile.balance || 0) + amount;
+const newEarned = Number(profile.total_earned || 0) + amount;
 
+const { error } = await supabase
+  .from("profiles")
+  .update({
+    balance: newBalance,
+    total_earned: newEarned,
+  })
+  .eq("id", targetUserId);
     if (error) {
       return res.status(500).json({
         success: false,
