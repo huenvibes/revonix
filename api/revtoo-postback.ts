@@ -44,11 +44,11 @@ export default async function handler(req, res) {
     }
 
     // GET PROFILE
-   const { data: profile, error: profileError } = await supabase
-  .from("public.profiles")
-  .select("*")
-  .eq("id", String(targetUserId).trim())
-  .maybeSingle();
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", String(targetUserId).trim())
+      .maybeSingle();
 
     // PROFILE NOT FOUND
     if (profileError || !profile) {
@@ -66,12 +66,12 @@ export default async function handler(req, res) {
 
     // UPDATE PROFILE
     const { error: updateError } = await supabase
-      .from("public.profiles")
+      .from("profiles")
       .update({
         balance: newBalance,
         total_earned: newEarned,
       })
-      .eq("id", String(targetUserId).trim())
+      .eq("id", String(targetUserId).trim());
 
     // UPDATE FAILED
     if (updateError) {
