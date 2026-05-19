@@ -55,10 +55,7 @@ const amount = Number(
       });
     }
 
-    return res.status(200).json({
-      success: true,
-      credited: amount,
-    });
+    return res.status(200).send("OK");
 
   } catch (err) {
     return res.status(500).json({
