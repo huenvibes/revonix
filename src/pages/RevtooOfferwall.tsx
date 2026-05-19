@@ -5,15 +5,22 @@ import { useAuth } from '../contexts/AuthContext';
 
 export const RevtooOfferwall = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  
+  // ১. useAuth থেকে user এর পাশাপাশি profile ডেটাও কল করুন
+  const { user, profile } = useAuth();
 
-  if (!user) {
+  // ২. user অথবা profile লোড না হলে null রিটার্ন করবে
+  if (!user || !profile) {
     return null; // Will be handled by ProtectedRoute
   }
 
-  const iframeUrl = `https://revtoo.com/offerwall/tqn4bgj90i24acqrj36n39bp3l40g2/${user.id}`;
+  // ৩. এখন profile.user_code কোনো এরর ছাড়াই কাজ করবে
+  const iframeUrl = `https://revtoo.com/offerwall/tqn4bgj90i24acqrj36n39bp3l40g2/${profile.user_code}`;
 
   return (
+    <div className="flex flex-col h-[calc(100vh-64px)] -mx-6 -mt-6">
+      {/* Top Header */}
+      {/* আপনার বাকি কোড নিচে আগের মতই থাকবে... */}
     <div className="flex flex-col h-[calc(100vh-64px)] -mx-6 -mt-6">
       {/* Top Header */}
       <div className="bg-white px-6 py-4 border-b border-[#E2E8F0] flex items-center shrink-0">
