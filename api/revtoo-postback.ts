@@ -12,6 +12,7 @@ const targetUserId = String(
   req.query.subid ||
   req.query.userId ||
   req.query.userid ||
+  req.query.amount ||
   ""
 ).trim();
 
@@ -20,12 +21,9 @@ const amount = Number(
   req.query.payout ||
   0
 );
-    if (!targetUserId || amount <= 0) {
-      return res.status(400).json({
-        success: false,
-        error: "Missing params",
-      });
-    }
+    if (!targetUserId) {
+  return res.status(200).send("OK");
+}
 
     const { data: profile } = await supabase
       .from("profiles")
