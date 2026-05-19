@@ -20,9 +20,6 @@ export const RevtooOfferwall = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] -mx-6 -mt-6">
       {/* Top Header */}
-      {/* আপনার বাকি কোড নিচে আগের মতই থাকবে... */}
-    <div className="flex flex-col h-[calc(100vh-64px)] -mx-6 -mt-6">
-      {/* Top Header */}
       <div className="bg-white px-6 py-4 border-b border-[#E2E8F0] flex items-center shrink-0">
         <button 
           onClick={() => navigate('/offerwalls')}
