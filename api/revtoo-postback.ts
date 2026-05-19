@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   try {
     console.log("REVTOO QUERY:", req.query);
 
+    // USER ID
     const targetUserId = String(
       req.query.subId ||
       req.query.subid ||
@@ -22,6 +23,7 @@ export default async function handler(req, res) {
       ""
     ).trim();
 
+    // AMOUNT
     const amount = Number(
       req.query.reward ||
       req.query.payout ||
@@ -30,6 +32,10 @@ export default async function handler(req, res) {
       0
     );
 
+    console.log("TARGET USER:", targetUserId);
+    console.log("AMOUNT:", amount);
+
+    // CHECK USER ID
     if (!targetUserId) {
       return res.status(400).json({
         success: false,
@@ -37,22 +43,28 @@ export default async function handler(req, res) {
       });
     }
 
+    // GET PROFILE
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", targetUserId)
       .single();
 
+    // PROFILE NOT FOUND
     if (profileError || !profile) {
+      console.log("PROFILE ERROR:", profileError);
+
       return res.status(404).json({
         success: false,
         error: "Profile not found",
       });
     }
 
+    // NEW VALUES
     const newBalance = Number(profile.balance || 0) + amount;
     const newEarned = Number(profile.total_earned || 0) + amount;
 
+    // UPDATE PROFILE
     const { error: updateError } = await supabase
       .from("profiles")
       .update({
@@ -61,19 +73,22 @@ export default async function handler(req, res) {
       })
       .eq("id", targetUserId);
 
+    // UPDATE FAILED
     if (updateError) {
+      console.log("UPDATE ERROR:", updateError);
+
       return res.status(500).json({
         success: false,
         error: updateError.message,
       });
     }
 
-    return res.status(200).json({
-      success: true,
-      credited: amount,
-    });
+    console.log("BALANCE ADDED SUCCESS");
 
+    return res.status(200).send("OK");
   } catch (err) {
+    console.log("SERVER ERROR:", err);
+
     return res.status(500).json({
       success: false,
       error: String(err),
