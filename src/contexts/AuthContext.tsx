@@ -91,11 +91,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!mounted) return;
         
         if (currentSession?.user) {
-          setSession(currentSession);
-          setUser(currentSession.user);
-          const p = await fetchProfile(currentSession.user.id, currentSession.user.email, currentSession.user.user_metadata);
-          if (mounted) setProfile(p);
-        } else {
+  setSession(currentSession);
+  setUser(currentSession.user);
+
+  const p = await fetchProfile(
+    currentSession.user.id,
+    currentSession.user.email,
+    currentSession.user.user_metadata
+  );
+
+  // Get current IP
+  const ipRes = await fetch('https://api.ipify.org?format=json');
+  const ipData = await ipRes.json();
+  const currentIP = ipData.ip;
+
+  let activity = 'Logged in';
+
+  if (p?.last_ip && p.last_ip !== currentIP) {
+    activity = `IP changed to ${currentIP}`;
+  }
+
+  // Update profile
+  await supabase
+    .from('profiles')
+    .update({
+      last_ip: currentIP,
+      last_login: new Date(),
+      recent_activity: activity,
+    })
+    .eq('id', currentSession.user.id);
+p.last_ip = currentIP;
+  if (mounted) setProfile(p);
+} else {
           setSession(null);
           setUser(null);
           setProfile(null);
