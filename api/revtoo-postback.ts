@@ -7,12 +7,19 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
   try {
-const subId = req.query.subId || req.query.subid;
-const reward = req.query.reward || req.query.payout;
+const targetUserId = String(
+  req.query.subId ||
+  req.query.subid ||
+  req.query.userId ||
+  req.query.userid ||
+  ""
+).trim();
 
-const targetUserId = String(subId || "").trim();
-const amount = Number(reward || 0);
-
+const amount = Number(
+  req.query.reward ||
+  req.query.payout ||
+  0
+);
     if (!targetUserId || amount <= 0) {
       return res.status(400).json({
         success: false,
