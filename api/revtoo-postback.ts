@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", String(targetUserId).trim())
+      .eq("user_code", Number(targetUserId))
       .maybeSingle();
 
     // PROFILE NOT FOUND
@@ -71,7 +71,7 @@ export default async function handler(req, res) {
         balance: newBalance,
         total_earned: newEarned,
       })
-      .eq("id", String(targetUserId).trim());
+      .eq("user_code", Number(targetUserId))
 
     // UPDATE FAILED
     if (updateError) {
