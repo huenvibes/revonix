@@ -434,6 +434,10 @@ export const Transactions = () => {
                   <span>Minimum $5.00</span>
                   <button type="button" onClick={() => setWithdrawAmount(String(profile?.balance || 0))} className="text-[#2563EB] hover:underline">Max</button>
                 </p>
+                <p className="text-xs text-red-500 font-medium mt-2">
+  If you withdraw ${withdrawAmount || 0}, you will get $
+  {withdrawAmount ? (parseFloat(withdrawAmount) * 0.5).toFixed(2) : '0.00'}
+</p>
               </div>
 
               <div className="pt-4 border-t border-[#E2E8F0]">
