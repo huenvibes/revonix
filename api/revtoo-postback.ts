@@ -35,9 +35,9 @@ const amount = Number(
 
     const { data: profile } = await supabase
       .from("profiles")
-      .select("*")
-      
-      .single();
+.select("*")
+.eq("id", targetUserId.trim())
+.single();
 
     if (!profile) {
       return res.status(404).json({
