@@ -7,6 +7,7 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
   try {
+    console.log(req.query);
 const targetUserId = String(
   req.query.subId ||
   req.query.subid ||
