@@ -31,6 +31,12 @@ export default async function handler(req, res) {
       req.query.value ||
       0
     );
+    if (isNaN(amount)) {
+  return res.status(400).json({
+    success: false,
+    error: "Invalid amount",
+  });
+}
 
     console.log("TARGET USER:", targetUserId);
     console.log("AMOUNT:", amount);
