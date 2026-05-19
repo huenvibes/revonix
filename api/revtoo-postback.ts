@@ -7,19 +7,26 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
   try {
+    console.log("REVTOO QUERY:", req.query);
     console.log(req.query);
 const targetUserId = String(
   req.query.subId ||
   req.query.subid ||
   req.query.userId ||
   req.query.userid ||
-  req.query.amount ||
+  req.query.uid ||
+  req.query.user_id ||
+  req.query.s1 ||
+  req.query.clickid ||
+  req.query.transaction_id ||
   ""
 ).trim();
 
 const amount = Number(
   req.query.reward ||
   req.query.payout ||
+  req.query.amount ||
+  req.query.value ||
   0
 );
     if (!targetUserId) {
