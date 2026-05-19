@@ -120,6 +120,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       recent_activity: activity,
     })
     .eq('id', currentSession.user.id);
+  await supabase
+  .from('login_history')
+  .insert({
+    user_id: currentSession.user.id,
+    ip_address: currentIP,
+    activity: activity,
+  });
 p.last_ip = currentIP;
   if (mounted) setProfile(p);
 } else {
