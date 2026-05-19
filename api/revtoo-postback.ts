@@ -13,7 +13,7 @@ const reward = req.query.reward || req.query.payout;
 const targetUserId = String(subId || "").trim();
 const amount = Number(reward || 0);
 
-    if (!targetUserId || !amount) {
+    if (!targetUserId || amount <= 0) {
       return res.status(400).json({
         success: false,
         error: "Missing params",
