@@ -159,13 +159,48 @@ p.last_ip = currentIP;
         setLoading(false);
       } else if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
         if (currentSession?.user) {
-          try {
-            // We load profile but do NOT set global loading to true to prevent global hangs
-            // The dashboard/app will handle null profile gracefully while loading
-            const p = await fetchProfile(currentSession.user.id, currentSession.user.email, currentSession.user.user_metadata);
-            if (mounted) {
-              setProfile(p);
-            }
+  try {
+    const p = await fetchProfile(
+      currentSession.user.id,
+      currentSession.user.email,
+      currentSession.user.user_metadata
+    );
+
+    // Get current IP
+    const ipRes = await fetch('https://api.ipify.org?format=json');
+    const ipData = await ipRes.json();
+    const currentIP = ipData.ip;
+
+    let activity = 'Logged in';
+
+    if (p?.last_ip && p.last_ip !== currentIP) {
+      activity = `IP changed to ${currentIP}`;
+    }
+
+    // Update latest profile info
+    await supabase
+      .from('profiles')
+      .update({
+        last_ip: currentIP,
+        last_login: new Date(),
+        recent_activity: activity,
+      })
+      .eq('id', currentSession.user.id);
+
+    // Save login history
+    await supabase
+      .from('login_history')
+      .insert({
+        user_id: currentSession.user.id,
+        ip_address: currentIP,
+        activity: activity,
+      });
+
+    p.last_ip = currentIP;
+
+    if (mounted) {
+      setProfile(p);
+    }
           } catch (err) {
             console.error('[AuthContext] onAuthStateChange error:', err);
           }
