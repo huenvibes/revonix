@@ -29,14 +29,14 @@ const amount = Number(
   req.query.value ||
   0
 );
-    if (!targetUserId) {
+    .eq("id", targetUserId.trim())
   return res.status(200).send("OK");
 }
 
     const { data: profile } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", targetUserId)
+      
       .single();
 
     if (!profile) {
@@ -55,7 +55,7 @@ const { error } = await supabase
     balance: newBalance,
     total_earned: newEarned,
   })
-  .eq("id", targetUserId);
+  .eq("id", targetUserId.trim())
     if (error) {
       return res.status(500).json({
         success: false,
