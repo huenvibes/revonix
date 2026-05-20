@@ -54,7 +54,7 @@ export const Dashboard = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { name: 'Revtoo', tag: 'High Paying Surveys', color: 'text-blue-500', bg: 'bg-blue-50' },
-            { name: 'AdGem', tag: 'Mobile Tasks & Games', color: 'text-orange-500', bg: 'bg-orange-50' },
+            { name: 'Spades', tag: 'Mobile Games', color: 'text-orange-500', bg: 'bg-orange-50' },
             { name: 'CPX Research', tag: 'Market Research', color: 'text-green-500', bg: 'bg-green-50' },
             { name: 'Monlix', tag: 'Daily Quick Offers', color: 'text-purple-500', bg: 'bg-purple-50' },
           ].map((wall, i) => (
