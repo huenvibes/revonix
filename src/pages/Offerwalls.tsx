@@ -22,10 +22,10 @@ const offerwalls = [
   },
   { 
     id: 2, 
-    name: 'AdGem', 
-    description: 'Earn by playing mobile games and testing new applications.', 
-    payout: 'Immediate',
-    category: 'Mobile Tasks',
+    name: 'Spades', 
+    description: 'Earn by playing mobile games', 
+    payout: 'Up to 24H',
+    category: 'Mobile Games',
     rating: 4.6,
     color: 'text-orange-500',
     bg: 'bg-orange-50'
