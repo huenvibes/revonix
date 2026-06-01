@@ -11,17 +11,18 @@ export default async function handler(req, res) {
 
     // USER ID
     const targetUserId = String(
-      req.query.subId ||
-      req.query.subid ||
-      req.query.userId ||
-      req.query.userid ||
-      req.query.uid ||
-      req.query.user_id ||
-      req.query.s1 ||
-      req.query.clickid ||
-      req.query.transaction_id ||
-      ""
-    ).trim();
+  req.query.subID ||   // <-- add this
+  req.query.subId ||
+  req.query.subid ||
+  req.query.userId ||
+  req.query.userid ||
+  req.query.uuid ||
+  req.query.user_id ||
+  req.query.s1 ||
+  req.query.clickid ||
+  req.query.transaction_id ||
+  ""
+).trim();
 
     // AMOUNT
     const amount = Number(
