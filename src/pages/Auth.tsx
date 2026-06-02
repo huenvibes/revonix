@@ -1,6 +1,6 @@
 import React from 'react';
-import { Sidebar } from './Sidebar';
-import { Topbar } from './Topbar';
+import { Sidebar } from '../components/layout/Sidebar';
+import { Topbar } from '../components/layout/Topbar';
 import { motion } from 'motion/react';
 import { isDemoMode } from '../../lib/supabase';
 
