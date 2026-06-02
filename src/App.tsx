@@ -13,6 +13,7 @@ import { Transactions } from './pages/Transactions';
 import { Profile } from './pages/Profile';
 import { Settings } from './pages/Settings';
 import { RevtooOfferwall } from './pages/RevtooOfferwall';
+import { AdminPanel } from './pages/AdminPanel';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -48,6 +49,7 @@ export default function App() {
           <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+          <Route path="/admin" element={<AdminPanel />} />
           
           {/* Redirect aliases */}
           <Route path="/history" element={<Navigate to="/transactions" replace />} />
