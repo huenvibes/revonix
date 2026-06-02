@@ -2,7 +2,7 @@ import React from 'react';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { motion } from 'motion/react';
-import { isDemoMode } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase';
 
 interface LayoutProps {
   children: React.ReactNode;
