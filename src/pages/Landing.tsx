@@ -188,7 +188,7 @@ export const Landing = () => {
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-6 tracking-tight">Access the world's best <span className="text-[#2563EB]">Offerwalls.</span></h2>
               <p className="text-[#64748B] text-lg mb-8 leading-relaxed">
-                We've partnered with industry leaders like Revtoo, Spades, and CPX Research to ensure you always have high-paying tasks available.
+                We've partnered with industry leaders like Revtoo, AdGem, and CPX Research to ensure you always have high-paying tasks available.
               </p>
               <ul className="space-y-4 mb-10">
                 {[
@@ -210,7 +210,7 @@ export const Landing = () => {
             <div className="grid grid-cols-2 gap-4">
               {[
                 { name: 'Revtoo', tag: 'Surveys' },
-                { name: 'Spades', tag: 'Tasks' },
+                { name: 'AdGem', tag: 'Tasks' },
                 { name: 'Monlix', tag: 'Ads' },
                 { name: 'Offertoro', tag: 'Apps' },
               ].map((wall, i) => (

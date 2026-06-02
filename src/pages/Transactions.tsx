@@ -11,11 +11,10 @@ import {
   Landmark,
   ArrowRight,
   AlertCircle,
-  X,
-  PlayCircle
+  X
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase, isDemoMode } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 
 const PAYOUT_METHODS = [
   { id: 'crypto', name: 'Crypto Withdraw', icon: Bitcoin, color: 'text-[#F7931A]', bg: 'bg-[#FFFBEB]' },
@@ -39,7 +38,19 @@ export const Transactions = () => {
   const [withdrawAmount, setWithdrawAmount] = useState<string>('');
   const [payoutError, setPayoutError] = useState('');
   const [submittingPayout, setSubmittingPayout] = useState(false);
-  const [simulatingOffer, setSimulatingOffer] = useState(false);
+
+  useEffect(() => {
+    if (profile && profile.created_at) {
+      setActivities([
+        {
+          id: 'joined',
+          type: 'Joined Revonix',
+          date: new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          time: new Date(profile.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+        }
+      ]);
+    }
+  }, [profile]);
 
   useEffect(() => {
     if (profile?.id && currentTab === 'history') {
@@ -71,25 +82,6 @@ export const Transactions = () => {
           amount: typeof reward.amount === 'number' ? reward.amount : (typeof reward.payout === 'number' ? reward.payout : 0)
         }));
         setRewards(formattedRewards);
-        
-        // Also update activities with the rewards
-        if (profile.created_at) {
-          const newActivities = [
-            ...data.map((r: any) => ({
-              id: `act_${r.id}`,
-              type: `Completed ${r.provider} Task`,
-              date: new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-              time: new Date(r.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-            })),
-            {
-              id: 'joined',
-              type: 'Joined Revonix',
-              date: new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-              time: new Date(profile.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-            }
-          ];
-          setActivities(newActivities);
-        }
       }
     } catch (err) {
       console.error('Error fetching rewards exception:', err);
@@ -132,45 +124,6 @@ export const Transactions = () => {
   };
 
   const hasPendingPayout = payouts.some(p => p.status === 'pending');
-
-  const handleSimulateOffer = async () => {
-    if (!profile) return;
-    setSimulatingOffer(true);
-    try {
-      const providers = ['Revtoo', 'Spades', 'Monlix', 'CPX Research'];
-      const offerNames = ['Survey: Shopping Habits', 'Play Game: Reach Level 5', 'Watch Video Ad', 'Install Mobile App'];
-      
-      const randomProvider = providers[Math.floor(Math.random() * providers.length)];
-      const randomOffer = offerNames[Math.floor(Math.random() * offerNames.length)];
-      const randomAmount = parseFloat((Math.random() * (5 - 0.5) + 0.5).toFixed(2));
-
-      const newBalance = profile.balance + randomAmount;
-      const newTotal = profile.total_earned + randomAmount;
-
-      // Update balance
-      await supabase.from('profiles').update({ 
-        balance: newBalance,
-        total_earned: newTotal
-      }).eq('id', profile.id);
-
-      // Add transaction
-      await supabase.from('reward_transactions').insert({
-        user_id: profile.id,
-        trans_id: `mock_tx_${Date.now()}`,
-        provider: randomProvider,
-        offer_name: randomOffer,
-        payout: randomAmount,
-        status: 'completed'
-      });
-
-      await fetchRewards();
-      await refreshProfile();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSimulatingOffer(false);
-    }
-  };
 
   const handleWithdrawRequest = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -271,21 +224,7 @@ export const Transactions = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Rewards Section */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-[#0F172A]">Rewards</h2>
-              {isDemoMode && (
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="h-8 px-3 text-xs font-bold border-[#2563EB] text-[#2563EB] hover:bg-[#EFF6FF] gap-1"
-                  onClick={handleSimulateOffer}
-                  disabled={simulatingOffer}
-                >
-                  <PlayCircle className="w-3.5 h-3.5" />
-                  {simulatingOffer ? 'Simulating...' : 'Simulate Earning'}
-                </Button>
-              )}
-            </div>
+            <h2 className="text-lg font-bold text-[#0F172A]">Rewards</h2>
             <Card className="p-0 border-[#E2E8F0] overflow-hidden shadow-sm">
               {rewards.length > 0 ? (
                 <div className="divide-y divide-[#E2E8F0]">
@@ -422,7 +361,7 @@ export const Transactions = () => {
                         <div className="text-right">
                           <p className="text-sm font-bold text-[#0F172A]">${p.amount.toFixed(2)}</p>
                           <p className={`text-[10px] font-bold uppercase tracking-wider ${
-                            p.status === 'completed' || p.status === 'approved' ? 'text-[#10B981]' : (p.status === 'pending' || p.status === 'processing' || p.status === 'hold' ? 'text-[#F59E0B]' : 'text-[#EF4444]')
+                            p.status === 'completed' ? 'text-[#10B981]' : (p.status === 'pending' ? 'text-[#F59E0B]' : 'text-[#EF4444]')
                           }`}>
                             {p.status}
                           </p>
@@ -495,6 +434,10 @@ export const Transactions = () => {
                   <span>Minimum $5.00</span>
                   <button type="button" onClick={() => setWithdrawAmount(String(profile?.balance || 0))} className="text-[#2563EB] hover:underline">Max</button>
                 </p>
+                <p className="text-xs text-red-500 font-medium mt-2">
+  If you withdraw ${withdrawAmount || 0}, you will get $
+  {withdrawAmount ? (parseFloat(withdrawAmount) * 0.5).toFixed(2) : '0.00'}
+</p>
               </div>
 
               <div className="pt-4 border-t border-[#E2E8F0]">

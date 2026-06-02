@@ -125,20 +125,6 @@ export const Auth = ({ type }: AuthProps) => {
         </div>
 
         <Card className="p-8 shadow-xl border-[#E2E8F0]">
-          {isDemoMode && (
-            <div className="mb-6 p-4 bg-[#EFF6FF] border border-[#DBEAFE] rounded-xl text-[#1E40AF] text-xs leading-relaxed">
-              <span className="font-bold flex items-center gap-1.5 mb-1">
-                <span className="inline-flex w-1.5 h-1.5 rounded-full bg-[#2563EB] animate-pulse" />
-                💡 Sandbox Account Mode
-              </span>
-              Use this demo user to sign in instantly with simulated records:
-              <div className="mt-2 font-mono text-[11px] bg-white bg-opacity-70 p-2.5 rounded-lg border border-[#DBEAFE] text-[#1E40AF]">
-                Email: <span className="font-bold select-all">demo@example.com</span><br />
-                Password: <span className="font-bold select-all">password</span>
-              </div>
-            </div>
-          )}
-
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm font-medium">
               {error}
